@@ -4,6 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "type": "commonjs",
+  "scripts": {
+    "start": "yarn ts-node src/index.ts",
+    "codegen": "yarn ts-node tools/i18nextcodegen.ts",
+    "postinstall": "yarn codegen"
+  },
   "dependencies": {
     "i18next": "^19.8.4",
     "typescript": "^4.1.3"

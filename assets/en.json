@@ -1,5 +1,15 @@
 {
-  "sampleData": {
-    "testString": "Hello World!"
+  "colors": {
+    "red": "Red",
+    "blue": "Blue"
+  },
+  "makes": {
+    "japanese": {
+      "mitsubishi": "Mitsubishi",
+      "nissan": "Nissan"
+    },
+    "european": {
+      "ferrari": "Ferrari"
+    }
   }
 }
