@@ -5,9 +5,7 @@
   "license": "MIT",
   "type": "commonjs",
   "scripts": {
-    "start": "yarn ts-node src/index.ts",
-    "codegen": "yarn ts-node tools/i18nextcodegen.ts",
-    "postinstall": "yarn codegen"
+    "start": "yarn ts-node src/index.ts"
   },
   "dependencies": {
     "i18next": "^19.8.4",
