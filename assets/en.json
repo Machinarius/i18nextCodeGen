@@ -4,12 +4,8 @@
     "blue": "Blue"
   },
   "makes": {
-    "japanese": {
-      "mitsubishi": "Mitsubishi",
-      "nissan": "Nissan"
-    },
-    "european": {
-      "ferrari": "Ferrari"
-    }
+    "mitsubishi": "Mitsubishi",
+    "nissan": "Nissan",
+    "ferrari": "Ferrari"
   }
 }
