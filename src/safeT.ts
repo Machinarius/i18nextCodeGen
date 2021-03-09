@@ -1,8 +1,12 @@
 import * as strings from "../assets/en.json";
 
-type TranslationKeys<TStrings> = {
-    //@ts-expect-error
-    [k in keyof TStrings as `${k}.${keyof TStrings[k]}`]: ""
+type NestedKeys<T, k extends keyof T> = 
+    // @ts-expect-error
+    T[k] extends string ? k : `${k}.${keyof TranslationKeys<T[k]>}`;
+
+type TranslationKeys<T> = {
+    // @ts-expect-error
+    [i in keyof T as `${NestedKeys<T, i>}`]: ""
 }
 
-type AllKeys = `content:${keyof TranslationKeys<typeof strings>}`;
+type StringKeys = `content:${keyof TranslationKeys<typeof strings>}`;
