@@ -5,7 +5,7 @@ import path from "path";
 const TARGET_FILE = __dirname + "/../src/generated.ts";
 
 type KeysHierarchy = string[] | { [k: string]: KeysHierarchy };
-type KeysObject = { [k: string]: KeysObject | string}
+type KeysObject = { [k: string]: KeysObject | string };
 
 function extractKeysHierarchy(root: KeysObject): KeysHierarchy {
   const keys = Object.keys(root);
@@ -19,21 +19,28 @@ function extractKeysHierarchy(root: KeysObject): KeysHierarchy {
     return keys;
   }
 
-  return keys.reduce((container, key) => ({
-    ...container,
-    [key]: extractKeysHierarchy(root[key] as KeysObject)
-  }), {});
+  return keys.reduce(
+    (container, key) => ({
+      ...container,
+      [key]: extractKeysHierarchy(root[key] as KeysObject),
+    }),
+    {}
+  );
 }
 
 function generateTypeStrings(name: string, hierarchy: KeysHierarchy): string[] {
   if (Array.isArray(hierarchy)) {
-    return [`type ${name}Keys = ${hierarchy.map(key => `"${key}"`).join("|")};`];
+    return [
+      `type ${name}Keys = ${hierarchy.map((key) => `"${key}"`).join("|")};`,
+    ];
   }
 
   const keys = Object.keys(hierarchy);
   return [
-    `type ${name}Keys = ${keys.map(key => `\`${key}:\$\{${key}Keys\}\``).join("|")};`,
-    ...keys.flatMap(key => generateTypeStrings(key, hierarchy[key]))
+    `type ${name}Keys = ${keys
+      .map((key) => `\`${key}:\$\{${key}Keys\}\``)
+      .join("|")};`,
+    ...keys.flatMap((key) => generateTypeStrings(key, hierarchy[key])),
   ];
 }
 
@@ -44,7 +51,7 @@ function dumpTypeStringsToFile(strings: string[]) {
   if (fs.existsSync(absolutePath)) {
     fs.unlinkSync(absolutePath);
   }
-  
+
   fs.openSync(absolutePath, "w");
   fs.writeFileSync(absolutePath, strings.join("\n"));
 }
@@ -55,5 +62,5 @@ dumpTypeStringsToFile([
   `import { TFunction } from "i18next";`,
   ...generatedStrings,
   `const typesafeT = (t: TFunction, key: RootKeys) => t(key);`,
-  `export default typesafeT;`
+  `export default typesafeT;`,
 ]);
