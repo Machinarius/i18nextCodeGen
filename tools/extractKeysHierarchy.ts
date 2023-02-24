@@ -9,12 +9,12 @@ function visitNodes(
 ) {
   if (typeof root === "string") {
     const argumentMatches = [...root.matchAll(argumentRegex)];
-    const argumentKeys: string[] = argumentMatches.reduce((accumulator, nextMatch) => {
+    const argumentKeys = argumentMatches.reduce((accumulator, nextMatch) => {
       if (nextMatch.groups && nextMatch.groups["argName"]) {
         accumulator.push(nextMatch.groups["argName"]);
       }
       return accumulator;
-    }, []);
+    }, new Array<string>());
     collector.push({
       key: path.join("."),
       arguments: argumentKeys,
