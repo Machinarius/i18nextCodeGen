@@ -1,32 +1,9 @@
 import enStrings from "../assets/en.json";
 import fs from "fs";
 import path from "path";
+import { extractKeysHierarchy } from "./extractKeysHierarchy";
 
 const TARGET_FILE = __dirname + "/../src/generated.ts";
-
-type KeysHierarchy = string[] | { [k: string]: KeysHierarchy };
-type KeysObject = { [k: string]: KeysObject | string };
-
-function extractKeysHierarchy(root: KeysObject): KeysHierarchy {
-  const keys = Object.keys(root);
-  if (!keys.length) {
-    return [];
-  }
-
-  // Assume object is consistent with i18next json hierarchy:
-  // It either contains child objects or string values, but not a mix of both
-  if (typeof root[keys[0]] === "string") {
-    return keys;
-  }
-
-  return keys.reduce(
-    (container, key) => ({
-      ...container,
-      [key]: extractKeysHierarchy(root[key] as KeysObject),
-    }),
-    {}
-  );
-}
 
 function generateTypeStrings(name: string, hierarchy: KeysHierarchy): string[] {
   if (Array.isArray(hierarchy)) {
