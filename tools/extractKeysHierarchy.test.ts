@@ -70,4 +70,20 @@ describe("i18n file parser", () => {
       "content:greetings.evening.informal": ["name"]
     });
   });
+
+  it("Ignores nodes with trash", () => {
+    expect(
+      extractKeysHierarchy(
+        {
+          greetings: {
+            default: "Hello {{ name }}!",
+            evening: 123,
+          },
+        },
+        "content:"
+      )
+    ).toEqual({
+      "content:greetings.default": ["name"],
+    });
+  });
 });

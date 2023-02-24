@@ -1,10 +1,9 @@
 type KeyLeaf = { key: string; arguments: string[] };
-export type KeysObject = { [k: string]: KeysObject | string };
 
 const argumentRegex = /{{ ?(?<argName>\w+) ?}}/g;
 
 function visitNodes(
-  root: KeysObject | string,
+  root: unknown,
   path: string[],
   collector: KeyLeaf[]
 ) {
@@ -23,14 +22,15 @@ function visitNodes(
     return;
   }
 
-  Object.keys(root).forEach((key) => {
-    const value = root[key];
-    visitNodes(value, [...path, key], collector);
-  });
+  if (typeof root === "object") {
+    Object.entries(root).forEach(([key, value]) => {
+      visitNodes(value, [...path, key], collector);
+    });
+  }
 }
 
 export function extractKeysHierarchy(
-  root: KeysObject | string,
+  root: unknown,
   namespace: string
 ): { [key: string]: string[] } {
   const collector: KeyLeaf[] = [];
