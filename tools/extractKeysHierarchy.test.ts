@@ -34,4 +34,40 @@ describe("i18n file parser", () => {
       "content:greetings.evening.informal": [],
     });
   });
+
+  it("Parses keys with arguments", () => {
+    expect(
+      extractKeysHierarchy(
+        {
+          greetings: {
+            goodEvening: "Good evening {{ name }}!",
+          },
+        },
+        "content:"
+      )
+    ).toEqual({
+      "content:greetings.goodEvening": ["name"],
+    });
+  });
+
+  it("Parses keys with arguments and nested levels", () => {
+    expect(
+      extractKeysHierarchy(
+        {
+          greetings: {
+            default: "Hello {{ name }}!",
+            evening: {
+              formal: "Good evening {{ name }}",
+              informal: "Hey {{ name }}!",
+            }
+          },
+        },
+        "content:"
+      )
+    ).toEqual({
+      "content:greetings.default": ["name"],
+      "content:greetings.evening.formal": ["name"],
+      "content:greetings.evening.informal": ["name"]
+    });
+  });
 });
